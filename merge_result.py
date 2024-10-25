@@ -48,13 +48,28 @@ def merge():
                 logger.info(f"{file_number}: {fname}")
                 with open(fpath, mode="r") as f:
                     info: dict[str, str] = json.load(f)
-                    store_info = {
-                        key: regulate_str(value) for key, value in info.items()
-                    }
-                    if "link" in store_info:
-                        store_info["link"] = (
-                            "https://www.cde.ca.gov" + store_info["link"]
-                        )
+                    store_info = {}
+                    for key, value in info.items():
+                        if key == "link":
+                            store_info["link"] = "https://www.cde.ca.gov" + value
+                        elif key in ["statistical-info"]:
+                            continue
+                        elif key in ["school-address", "web-address"]:
+                            store_info[key] = regulate_str(
+                                value.replace(
+                                    "Link opens new browser tab",
+                                    "",
+                                ).replace(
+                                    "Google Map",
+                                    "",
+                                )
+                            )
+                        elif key in ["email"]:
+                            store_info[key] = regulate_str(
+                                value.replace("Link opens new Email", "")
+                            )
+                        else:
+                            store_info[key] = regulate_str(value)
 
                     res_df = pd.concat(
                         [res_df, pd.DataFrame([store_info])],
