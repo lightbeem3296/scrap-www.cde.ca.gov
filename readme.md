@@ -1,9 +1,11 @@
-# WORK
+# <https://www.cde.ca.gov> Scraper
 
-## HOME LINK
+## LINK
 
 <https://www.cde.ca.gov/SchoolDirectory/districtschool?allsearch=elementary&simplesearch=Y&items=25>
 
-## FIELDS
+## Usage
 
-We need minimum name of school, name of principal, email, phone #, address, website.
+1. Scrap indexes with `indxer.py`
+2. Scrap school information with `scraper.py`
+3. Merge into final result with `merge_result.py`

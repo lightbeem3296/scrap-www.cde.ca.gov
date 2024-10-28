@@ -68,6 +68,21 @@ def merge():
                             store_info[key] = regulate_str(
                                 value.replace("Link opens new Email", "")
                             )
+                        elif key in ["administrator", "chief-business-official"]:
+                            lines = value.split("\n\n")[0].split("\n")
+                            if len(lines) >= 2:
+                                store_info[f"{key}-name"] = lines[0].strip()
+                                store_info[f"{key}-role"] = lines[1].strip()
+                                for line in lines[2:]:
+                                    if "@" in line:
+                                        store_info[f"{key}-email"] = line.strip()
+                                    else:
+                                        store_info[f"{key}-phone"] = line.strip()
+                        elif key == "cds-coordinator-contact-for-data-updates":
+                            lines = value.replace("Request Data Update(s)", "").strip()
+                            name = lines.split("(")[0]
+                            store_info["cds-coordinator-name"] = name.strip()
+                            store_info["cds-coordinator-phone"] = lines[len(name):].strip()
                         else:
                             store_info[key] = regulate_str(value)
 
